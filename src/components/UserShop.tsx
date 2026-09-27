@@ -330,7 +330,7 @@ export default function UserShop() {
             )}
 
             {order && (
-              <div className="order-confirm" role="status">
+              <div role="status">
                 <h3>สั่งซื้อสำเร็จ</h3>
                 <p>
                   เลขที่คำสั่งซื้อ <strong>{order.code}</strong>
