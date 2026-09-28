@@ -1,6 +1,5 @@
 "use client";
 
-// 1  import ทั้งหมด
 import { useEffect, useState } from "react";
 import ProductDetail from "./ProductDetail";
 import ProductImage from "./ProductImage";
@@ -16,7 +15,6 @@ import {
 } from "@/lib/products";
 import type { Product, ProductList, SearchQuery } from "@/lib/products";
 
-// 2  type ที่ใช้เฉพาะในไฟล์นี้
 type LoadState = "loading" | "error" | "ready";
 
 type CartLine = {
@@ -49,7 +47,6 @@ export default function UserShop() {
   const [viewingId, setViewingId] = useState<number | null>(null);
   const [order, setOrder] = useState<PlacedOrder | null>(null);
 
-  // 4  useEffect  โหลดสินค้าครั้งเดียวตอนแสดงผลครั้งแรก
   useEffect(() => {
     fetchProducts(defaultQuery).then(showResult).catch(showError);
   }, []);
@@ -87,21 +84,18 @@ export default function UserShop() {
     }
   }
 
-  // เพิ่มลงตะกร้า ถ้ามีอยู่แล้วเพิ่มจำนวน แต่ไม่เกินเพดาน 80% ของสต็อก
   function addToCart(product: Product) {
     const limit = purchaseLimit(product);
     setOrder(null);
     setCart((prev) => {
       const found = prev.find((line) => line.product.id === product.id);
       if (found) {
-        // ถึงเพดานแล้ว คงจำนวนเดิม (ปุ่มจะถูกปิดไว้อยู่แล้ว)
         return prev.map((line) =>
           line.product.id === product.id
             ? { ...line, qty: Math.min(line.qty + 1, limit) }
             : line,
         );
       }
-      // สินค้าที่เพิ่มครั้งแรก เพดานต้องมากกว่า 0 ถึงจะใส่ได้
       if (limit < 1) {
         return prev;
       }
@@ -151,13 +145,11 @@ export default function UserShop() {
     cart.find((line) => line.product.id === id)?.qty ?? 0;
   const viewingProduct = products.find((item) => item.id === viewingId) ?? null;
 
-  // 6  return ส่วนแสดงผล
   return (
     <main className="page shop">
       <h1>เลือกซื้อสินค้า</h1>
 
       <div className="shop-layout">
-        {/* ---------- ฝั่งสินค้า ---------- */}
         <div className="shop-main">
           <ProductSearchForm onSearch={search} />
 
@@ -245,7 +237,7 @@ export default function UserShop() {
                           : tooLowStock
                             ? "สต็อกไม่พอสั่งซื้อ"
                             : maxed
-                              ? `เพิ่มไม่ได้ (ครบ 80% ของสต็อก ${limit} ชิ้น)`
+                              ? `เพิ่มไม่ได้เเล้ว`
                               : inCart > 0
                                 ? `เพิ่มลงตะกร้า (มี ${inCart})`
                                 : "เพิ่มลงตะกร้า"}
@@ -258,7 +250,6 @@ export default function UserShop() {
           </section>
         </div>
 
-        {/* ---------- ฝั่งตะกร้า ---------- */}
         <aside className="cart">
           <div className="panel cart-panel">
             <h2>ตะกร้าสินค้า ({cartCount})</h2>
